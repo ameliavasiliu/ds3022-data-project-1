@@ -3,8 +3,9 @@ import os
 import logging
 import time
 
+# logging for personal use 
 logging.basicConfig(
-    level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s',
+    level = logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s',
     filename='load.log'
 )
 logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ def load_parquet_files():
         con = duckdb.connect(database='emissions.duckdb', read_only=False)
         logger.info("Connected to DuckDB instance")
 
-        # 1. dropping tables if they exist
+        # 1. dropping tables if they exist so script can be rerun cleanly
         con.execute(f"""
             DROP TABLE IF EXISTS yellow_all
         ;
@@ -38,7 +39,7 @@ def load_parquet_files():
         """)
         logger.info("Dropped table if exists")
 
-        # 2. Loop through months of 2024 and load yellow + green
+        # 2. Loop through months of 2024 and load yellow + green taxi data in separate tables
         for taxi_type in ["yellow", "green"]:
             for year in range(2015, 2025):
                 for month in range(1, 13):
@@ -65,7 +66,7 @@ def load_parquet_files():
                     time.sleep(60)
         
 
-        # loading vehicle emissions CSV
+        # loading vehicle emissions CSV from local file with join
         csv_path = os.path.join('data', 'vehicle_emissions.csv')
         con.execute(f"""
         CREATE TABLE vehicle_emissions AS
@@ -73,9 +74,22 @@ def load_parquet_files():
         """)
         logger.info("Loaded vehicle_emissions.csv into vehicle_emissions table")
 
+        # running checks / summary queries
+        print(con.execute("SELECT COUNT(*) FROM yellow_all").fetchall())
+        logger.info("Counted yellow_all rows")
+
+        print(con.execute("SELECT COUNT(*) FROM green_all").fetchall())
+        logger.info("Counted green_all rows")
+
+        print(con.execute("SELECT AVG(trip_distance) FROM yellow_all").fetchall())
+        logger.info("Calculated average trip_distance from yellow_all")
+
+        print(con.execute("SELECT AVG(trip_distance) FROM green_all").fetchall())
+        logger.info("Calculated average trip_distance from green_all")
+
     except Exception as e:
         print(f"An error occurred: {e}")
         logger.error(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    load_parquet_files()
+    load_parquet_files() 
