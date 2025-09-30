@@ -77,19 +77,19 @@ def load_parquet_files():
         # running checks / summary queries
         yellow_count = con.execute("SELECT COUNT(*) FROM yellow_all").fetchone()[0]
         print(f"yellow taxi count is {yellow_count}")
-        logger.info("Counted yellow_all rows")
+        logger.info(f"yellow taxi count is {yellow_count}")
 
         green_count = con.execute("SELECT COUNT(*) FROM green_all").fetchone()[0]
         print(f"green taxi count is {green_count}")
-        logger.info("Counted green_all rows")
+        logger.info(f"green taxi count is {green_count}")
 
         yellow_avg_distance = con.execute("SELECT AVG(trip_distance) FROM yellow_all").fetchone()[0]
         print(f"average yellow taxi trip distance is {yellow_avg_distance}")
-        logger.info("Calculated average trip_distance from yellow_all")
+        logger.info(f"average yellow taxi trip distance is {yellow_avg_distance}")
 
         green_avg_distance = con.execute("SELECT AVG(trip_distance) FROM green_all").fetchone()[0]
         print(f"average green taxi trip distance is {green_avg_distance}")
-        logger.info("Calculated average trip_distance from green_all")
+        logger.info(f"average green taxi trip distance is {green_avg_distance}")
 
     except Exception as e:
         print(f"An error occurred: {e}")
