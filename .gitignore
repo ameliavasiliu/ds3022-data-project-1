@@ -1,7 +1,7 @@
 # Database files
 *.duckdb
 emissions.duckdb
-
+co2_by_month.png
 
 # Log files
 *.log
@@ -12,8 +12,6 @@ analyze.log
 /dbt/logs/dbt.log
 logs
 dbt.log
-target
-
 
 # Python virtual environment
 .venv/
@@ -26,16 +24,8 @@ venv
 dbt/target/
 dbt/logs/
 dbt/.user.yml
+target
 
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
 
 # Large data files (if any raw data gets added)
 data/*.csv
@@ -44,27 +34,6 @@ data/*.json
 *.xlsx
 *.xls
 
-# Jupyter notebook checkpoints
-.ipynb_checkpoints/
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
 
 # other
 .user.yml
