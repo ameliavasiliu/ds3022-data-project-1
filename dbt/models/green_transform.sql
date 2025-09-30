@@ -2,12 +2,14 @@
 {{config(materialized='table')}}
 
 SELECT
+-- finding CO2 per each trip in new column in kgs
     g.lpep_pickup_datetime,
     g.lpep_dropoff_datetime,
     g.passenger_count,
     g.trip_distance,
     (g.trip_distance * e.co2_grams_per_mile) / 1000.0 AS trip_co2_kgs,
 
+--calculating mph and extracting temporal features from pickup time
     CASE
         WHEN date_diff('second',g.lpep_pickup_datetime,g.lpep_dropoff_datetime)>0
         THEN g.trip_distance/(date_diff('second',g.lpep_pickup_datetime,g.lpep_dropoff_datetime)/3600)

@@ -36,7 +36,7 @@ def clean_trip_data():
         """)
         logger.info("Dropped clean tables if they exist")
 
-        # 2-7 applying cleaning to both taxi types
+        # 2-7 applying cleaning to both taxi types using a for loop
         for taxi_type in ["yellow", "green"]:
             logger.info(f"Cleaning {taxi_type}_all table")
 
@@ -88,11 +88,18 @@ def clean_trip_data():
                 WHERE ({dropoff_col} - {pickup_col}) > INTERVAL 1 DAY
                 ;
                 """).fetchone()[0]
+            
+            # printing check statements
             print(f"\n{taxi_type}_clean")
+            logger.info(f"\n{taxi_type}_clean")
             print(f"Total rows: {total}")
+            logger.info(f"Total rows: {total}")
             print(f"Number of 0-passenger trips: {zero_pass}")
+            logger.info(f"Number of 0-passenger trips: {zero_pass}")
             print(f"Valid distance range: {bad_dist}")
+            logger.info(f"Valid distance range: {bad_dist}")
             print(f"Duration under 1 day: {too_long}")
+            logger.info(f"Duration under 1 day: {too_long}")
 
     except Exception as e:
         print(f"An error occurred: {e}")

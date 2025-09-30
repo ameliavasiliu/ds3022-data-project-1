@@ -63,7 +63,7 @@ def load_parquet_files():
                     except Exception as e:
                         logger.warning("failed to load")
                     
-                    time.sleep(60)
+                    time.sleep(30)
         
 
         # loading vehicle emissions CSV from local file with join
@@ -75,16 +75,20 @@ def load_parquet_files():
         logger.info("Loaded vehicle_emissions.csv into vehicle_emissions table")
 
         # running checks / summary queries
-        print(con.execute("SELECT COUNT(*) FROM yellow_all").fetchall())
+        yellow_count = con.execute("SELECT COUNT(*) FROM yellow_all").fetchone()[0]
+        print(f"yellow taxi count is {yellow_count}")
         logger.info("Counted yellow_all rows")
 
-        print(con.execute("SELECT COUNT(*) FROM green_all").fetchall())
+        green_count = con.execute("SELECT COUNT(*) FROM green_all").fetchone()[0]
+        print(f"green taxi count is {green_count}")
         logger.info("Counted green_all rows")
 
-        print(con.execute("SELECT AVG(trip_distance) FROM yellow_all").fetchall())
+        yellow_avg_distance = con.execute("SELECT AVG(trip_distance) FROM yellow_all").fetchone()[0]
+        print(f"average yellow taxi trip distance is {yellow_avg_distance}")
         logger.info("Calculated average trip_distance from yellow_all")
 
-        print(con.execute("SELECT AVG(trip_distance) FROM green_all").fetchall())
+        green_avg_distance = con.execute("SELECT AVG(trip_distance) FROM green_all").fetchone()[0]
+        print(f"average green taxi trip distance is {green_avg_distance}")
         logger.info("Calculated average trip_distance from green_all")
 
     except Exception as e:

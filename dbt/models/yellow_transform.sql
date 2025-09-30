@@ -1,6 +1,7 @@
 --Creating new table with transformed data for yellow taxis
 {{config(materialized='table')}}
 
+-- finding the CO2 emissions for yellow taxis and converting to kgs
 SELECT
     y.tpep_pickup_datetime,
     y.tpep_dropoff_datetime,
@@ -8,6 +9,7 @@ SELECT
     y.trip_distance,
     (y.trip_distance * e.co2_grams_per_mile) / 1000.0 AS trip_co2_kgs,
 
+-- calculating mph and extracting temporal features from pickup time
     CASE
         WHEN date_diff('second',y.tpep_pickup_datetime,y.tpep_dropoff_datetime)>0
         THEN y.trip_distance/(date_diff('second',y.tpep_pickup_datetime,y.tpep_dropoff_datetime)/3600)
